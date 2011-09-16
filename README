@@ -1,0 +1,36 @@
+HTTP::Easy
+-----------
+
+Perl 6 libraries to make HTTP servers easily. Inspired by HTTP::Server::Simple.
+Eventually this will also include HTTP::Easy::Client but that's not high priority right now.
+
+= HTTP::Easy =
+
+A role to build custom HTTP servers. Provides the framework for parsing HTTP connections.
+The classes implementing this must provide the rest, and send the appropriate output.
+
+= HTTP::Easy::PSGI =
+
+A class implementing HTTP::Easy. This builds a PSGI environment, and passes it onto
+a handler. The handler must return a PSGI response (e.g.: [ $status, @headers, @body ] )
+This can be used as an engine in the WWW::App library.
+
+= HTTP::Easy::SCGI =
+
+A class implementing HTTP::Easy. This uses SCGI::Client to send a request to an SCGI daemon.
+It will receive the reply from the SCGI daemon, and parse it accordingly (it automatically
+detects if NPH output was returned.)
+
+= Examples =
+
+See the examples in the 'examples/' folder.
+
+= Author =
+
+Timothy Totten
+http://huri.net/
+http://github.com/supernovus/
+
+= License =
+
+Artistic License 2.0
