@@ -20,6 +20,7 @@ class HTTP::Easy {
       my @request = split("\x0D\x0A", $received);
       my $request = shift @request;
       my ($method, $uri, $protocol) = $request.split(/\s/);
+      if (!$protocol) { $protocol = 'HTTP/1.1'; }
       unless $method eq any(<GET POST HEAD PUT DELETE>) { die "unknown HTTP method"; }
       my ($path, $query) = $uri.split('?', 2);
       $query //= '';
