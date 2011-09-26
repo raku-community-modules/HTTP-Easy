@@ -17,6 +17,8 @@ This can be used as an engine in the WWW::App library.
 
 = HTTP::Easy::SCGI =
 
+ ** Not implemented yet, see TODO **
+
 A class implementing HTTP::Easy. This uses SCGI::Client to send a request to an SCGI daemon.
 It will receive the reply from the SCGI daemon, and parse it accordingly (it automatically
 detects if NPH output was returned.)
