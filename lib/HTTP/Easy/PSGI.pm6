@@ -5,8 +5,11 @@ use HTTP::Easy;
 
 class HTTP::Easy::PSGI is HTTP::Easy;
 
+use HTTP::Status;
+
+constant $CRLF = "\x0D\x0A";
+
 has $!app is rw;
-has $!crlf = "\x0D\x0A";
 
 method app ($app) {
   $!app = $app;
@@ -33,12 +36,13 @@ method handler {
   else {
     die "Invalid {self.WHAT} application.";
   }
-  my $output = %.env<SERVER_PROTOCOL>~' '~$result[0]~$!crlf;
+  my $message = get_http_status_msg($result[0]);
+  my $output = %.env<SERVER_PROTOCOL>~' '~$result[0]~" $message$CRLF";
   for @($result[1]) -> $header {
-    $output ~= $header.key ~ ': ' ~ $header.value ~ $!crlf;
+    $output ~= $header.key ~ ': ' ~ $header.value ~ $CRLF;
   }
-  my $body = $result[2].join($!crlf);
-  $output ~= $!crlf ~ $body;
+  my $body = $result[2].join($CRLF);
+  $output ~= $CRLF ~ $body;
   return $output;
 }
 

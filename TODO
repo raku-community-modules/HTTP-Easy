@@ -1,2 +1,2 @@
-* Add HTTP::Easy::SCGI (and corresponding SCGI::Client)
+* Add HTTP::Easy::SCGI
 * Add examples other than test.p6
