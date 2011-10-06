@@ -8,6 +8,7 @@ my $app = sub (%env) {
   return [ 200, [ 'Content-Type' => 'text/plain' ], [ "Hello World" ] ];
 }
 
-my $server = HTTP::Easy::PSGI.new;
+## We are using :debug for more detailed output to STDERR.
+my $server = HTTP::Easy::PSGI.new(:debug);
 $server.app($app);
 $server.run;
