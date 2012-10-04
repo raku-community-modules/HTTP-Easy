@@ -41,7 +41,7 @@ method handler {
   for @($result[1]) -> $header {
     $output ~= $header.key ~ ': ' ~ $header.value ~ $CRLF;
   }
-  my $body = $result[2].join($CRLF);
+  my $body = $result[2].join;
   $output ~= $CRLF ~ $body;
   return $output;
 }
