@@ -3,19 +3,21 @@
 
 use HTTP::Easy;
 
-class HTTP::Easy::PSGI is HTTP::Easy;
+class HTTP::Easy::PSGI does HTTP::Easy;
 
 use HTTP::Status;
 
 constant $CRLF = "\x0D\x0A";
 
-has $!app is rw;
+has $!app;
 
-method app ($app) {
+method app ($app) 
+{
   $!app = $app;
 }
 
-method handler {
+method handler 
+{
   ## First, let's add any necessary PSGI variables.
   %.env<psgi.version>      = [1,0];
   %.env<psgi.url_scheme>   = 'http'; ## TODO: detect this.
@@ -27,18 +29,22 @@ method handler {
   %.env<psgi.nonblocking>  = False; ## Allow when NBIO.
   %.env<psgi.streaming>    = False; ## Eventually?
   my $result;
-  if $!app ~~ Callable {
+  if $!app ~~ Callable 
+  {
     $result = $!app(%.env);
   }
-  elsif $!app.can('handle') {
+  elsif $!app.can('handle') 
+  {
     $result = $!app.handle(%.env);
   }
-  else {
+  else 
+  {
     die "Invalid {self.WHAT} application.";
   }
   my $message = get_http_status_msg($result[0]);
-  my $output = %.env<SERVER_PROTOCOL>~' '~$result[0]~" $message$CRLF";
-  for @($result[1]) -> $header {
+  my $output = $.http-protocol ~ ' ' ~ $result[0] ~ " $message$CRLF";
+  for @($result[1]) -> $header 
+  {
     $output ~= $header.key ~ ': ' ~ $header.value ~ $CRLF;
   }
   my $body = $result[2].join;
@@ -46,7 +52,8 @@ method handler {
   return $output;
 }
 
-method handle ($app) {
+method handle ($app) 
+{
   self.app($app);
   return self.run;
 }
