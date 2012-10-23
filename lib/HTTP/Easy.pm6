@@ -94,12 +94,29 @@ method run
       }
     }
 
-    ## Now, if there is a CONTENT_LENGTH header, let's read the content.
-    if %.env<CONTENT_LENGTH>
+    if %.env.exists('CONTENT_LENGTH')
+    { ## Use CONTENT_LENGTH to determine the length of data to read.
+      if %.env<CONTENT_LENGTH>
+      {
+        my $len = +%.env<CONTENT_LENGTH>;
+        $!body = $!connection.read($len);
+#       if $.debug { message("Got body: "~$!body.decode); }
+      }
+    }
+    else
     {
-      my $len = +%.env<CONTENT_LENGTH>;
-      $!body = $!connection.read($len);
-#      if $.debug { message("Got body: "~$!body.decode); }
+      ## No content length. Keep reading until no data is sent.
+      while my $read = $!connection.read(1024)
+      {
+        if $!body.defined
+        {
+          $!body ~= $read;
+        }
+        else
+        {
+          $!body = $read;
+        }
+      }
     }
 
     ## Call the handler. If it returns a string, it is assumed to be a valid
