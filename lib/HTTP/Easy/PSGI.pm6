@@ -47,8 +47,38 @@ method handler
   {
     $output ~= $header.key ~ ': ' ~ $header.value ~ $CRLF;
   }
-  my $body = $result[2].join;
-  $output ~= $CRLF ~ $body;
+  my @body = $result[2];
+  my $body;
+  for @body -> $segment
+  {
+    if ! $body.defined
+    {
+      $body = $segment;
+    }
+    elsif $body ~~ Buf
+    {
+      if $segment ~~ Buf
+      {
+        $body ~= $segment;
+      }
+      else
+      {
+        $body ~= $segment.Str.encode;
+      }
+    }
+    else
+    {
+      $body ~= $segment;
+    }
+  }
+  if $body ~~ Buf
+  {
+    $output = ($output~$CRLF).encode ~ $body;
+  }
+  else
+  {
+    $output ~= $CRLF ~ $body;
+  }
   return $output;
 }
 

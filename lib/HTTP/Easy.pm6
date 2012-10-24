@@ -119,13 +119,25 @@ method run
       }
     }
 
-    ## Call the handler. If it returns a string, it is assumed to be a valid
-    ## HTTP response. If it returns an undefined value, we assume the handler
+    ## Call the handler. 
+    ##
+    ## If it returns a defined value, it is assumed to be a valid HTTP 
+    ## response, in the form of a Str(ing), a Buf, or an object that
+    ## can be stringified.
+    ##
+    ## If it returns an undefined value, we assume the handler
     ## sent the response to the client directly, and end the session.
     my $res = self.handler;
     if defined $res 
-    { 
-      $!connection.send($res);
+    {
+      if $res ~~ Buf
+      {
+        $!connection.write($res);
+      }
+      else
+      {
+        $!connection.send(~$str);
+      }
     }
     $!connection.close;
     self.closed-connection;
