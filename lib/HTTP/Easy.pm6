@@ -136,7 +136,7 @@ method run
       }
       else
       {
-        $!connection.send(~$str);
+        $!connection.send(~$res);
       }
     }
     $!connection.close;
