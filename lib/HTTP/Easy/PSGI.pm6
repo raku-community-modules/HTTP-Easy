@@ -3,7 +3,8 @@
 
 use HTTP::Easy;
 
-class HTTP::Easy::PSGI does HTTP::Easy;
+class HTTP::Easy::PSGI:ver<2.1.3>:auth<http://supernovus.github.com/> 
+does HTTP::Easy;
 
 use HTTP::Status;
 

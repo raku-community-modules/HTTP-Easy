@@ -1,7 +1,7 @@
 ## A simple HTTP Daemon role. Inspired by HTTP::Server::Simple
 ## See HTTP::Easy::PSGI as the default daemon class implementation.
 
-role HTTP::Easy;
+role HTTP::Easy:ver<2.1.3>:auth<http://supernovus.github.com/>;
 
 use HTTP::Status;
 
@@ -41,6 +41,10 @@ method connect (:$port=$.port, :$host=$.host)
 
 method run 
 {
+  if %*ENV.exists('HTTP_EASY_DEBUG')
+  {
+    $!debug = ?%*ENV<HTTP_EASY_DEBUG>;
+  }
   if ! $!listener { self.connect; }
   message('Started HTTP server.');
   self.pre-connection;
