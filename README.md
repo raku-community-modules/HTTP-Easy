@@ -6,7 +6,7 @@ Perl 6 libraries to make HTTP servers easily.
 
 This was inspired by HTTP::Server::Simple, but has a very different internal
 API, and extended functionality. It's been designed to work well with my
-own WWW::App and SCGI libraries. Also see my HTTP::Client library if you
+own Web::App and SCGI libraries. Also see my HTTP::Client library if you
 are looking for an HTTP client rather than an HTTP server.
 
 ## HTTP::Easy
@@ -23,7 +23,7 @@ it onto a handler. The handler must return a PSGI response:
   [ $status, @headers, @body ]
 ```
 
-This can be used as an engine in the WWW::App library.
+This can be used as an engine in the [Web::App](https://github.com/supernovus/perl6-web/) library.
 
 ## Example
 
