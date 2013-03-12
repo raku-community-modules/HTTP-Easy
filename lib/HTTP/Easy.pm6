@@ -35,7 +35,8 @@ method connect (:$port=$.port, :$host=$.host)
   $!listener = IO::Socket::INET.new(
     :localhost($host),
     :localport($port),
-    :listen(1)
+    :listen(1),
+    :input-line-separator("\r\n")
   );
 }
 
@@ -53,12 +54,18 @@ method run
     if $.debug { message("Client connection received."); }
     self.on-connection;
     my $request = $!connection.get;
+    unless defined $request
+    {
+      if $.debug { message("Client connection lost."); }
+      $!connection.close;
+      next;
+    }
     message($request);
     my @headers;
     my $in-headers = True;
     while $in-headers
     {
-      my $line = $!connection.get.chomp;
+      my $line = $!connection.get;
       if ! $line { $in-headers = False; }
       if $.debug { $*ERR.say: "  $line"; }
       @headers.push($line);
