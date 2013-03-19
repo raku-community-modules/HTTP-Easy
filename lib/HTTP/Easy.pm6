@@ -36,7 +36,7 @@ method connect (:$port=$.port, :$host=$.host)
     :localhost($host),
     :localport($port),
     :listen(1),
-    :input-line-separator("\r\n")
+    :input-line-separator("\n\n")
   );
 }
 
@@ -61,15 +61,10 @@ method run
       next;
     }
     message($request);
-    my @headers;
-    my $in-headers = True;
-    while $in-headers
-    {
-      my $line = $!connection.get;
-      if ! $line { $in-headers = False; }
-      if $.debug { $*ERR.say: "  $line"; }
-      @headers.push($line);
-    }
+    my @headers = $!connection.lines.split("\n");
+  
+      if $.debug { $*ERR.say: join("\n",  @headers); }
+     
     if $.debug { message("Finished parsing headers."); }
     my ($method, $uri, $protocol) = $request.split(/\s/);
     if (!$protocol) { $protocol = DEFAULT_PROTOCOL; }
@@ -92,7 +87,8 @@ method run
     %.env<SERVER_NAME> = $.host;
     %.env<SERVER_PORT> = $.port;
     ## Next, let's add HTTP request headers.
-    for @headers -> $header
+    my @request_headers=$request.split("\n");
+    for @request_headers -> $header
     {
       my ($key, $value) = $header.split(': ');
       if defined $key and defined $value {
@@ -113,8 +109,12 @@ method run
       if %.env<CONTENT_LENGTH>
       {
         my $len = +%.env<CONTENT_LENGTH>;
+        # for url encoded data this won't work
+        # "dsadasd"
+        # $len = +171;
+        # say $len;
         $!body = $!connection.read($len);
-#       if $.debug { message("Got body: "~$!body.decode); }
+        if $.debug { message("Got body: "~$!body.decode); }
       }
     }
     elsif $.always-get-body
