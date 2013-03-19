@@ -36,7 +36,7 @@ method connect (:$port=$.port, :$host=$.host)
     :localhost($host),
     :localport($port),
     :listen(1),
-    :input-line-separator("\r\n")
+    :input-line-separator(CRLF)
   );
 }
 
@@ -63,13 +63,41 @@ method run
     message($request);
     my @headers;
     my $in-headers = True;
+## This should work, but at the moment, IO::Socket::INET is broken.
+#    while $in-headers
+#    {
+#      my $line = $!connection.get;
+#      if ! $line { $in-headers = False; }
+#      if $.debug { $*ERR.say: "  $line"; }
+#      @headers.push($line);
+#    }
+## This is the temporary workaround.
+    my $found-newline;
+    my $current-line = '';
     while $in-headers
     {
-      my $line = $!connection.get;
-      if ! $line { $in-headers = False; }
-      if $.debug { $*ERR.say: "  $line"; }
-      @headers.push($line);
+      my $byte = $!connection.read(1);
+      my $char = $byte.decode;
+      if $char ~~ "\n"
+      {
+        if $found-newline 
+        { 
+          $in-headers = False; 
+        }
+        else
+        {
+          @headers.push($current-line);
+          $current-line = '';
+          $found-newline = 1;
+        }
+      }
+      else
+      {
+        $current-line ~= $char;
+      }
     }
+## End of work around.
+
     if $.debug { message("Finished parsing headers."); }
     my ($method, $uri, $protocol) = $request.split(/\s/);
     if (!$protocol) { $protocol = DEFAULT_PROTOCOL; }
@@ -150,7 +178,7 @@ method run
       }
       else
       {
-        $!connection.send(~$res);
+        $!connection.send($res.Str);
       }
     }
     $!connection.close;
