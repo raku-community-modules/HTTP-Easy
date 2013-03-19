@@ -36,7 +36,7 @@ method connect (:$port=$.port, :$host=$.host)
     :localhost($host),
     :localport($port),
     :listen(1),
-    :input-line-separator("\r\n")
+    :input-line-separator("\n\n")
   );
 }
 
@@ -61,15 +61,10 @@ method run
       next;
     }
     message($request);
-    my @headers;
-    my $in-headers = True;
-    while $in-headers
-    {
-      my $line = $!connection.get;
-      if ! $line { $in-headers = False; }
-      if $.debug { $*ERR.say: "  $line"; }
-      @headers.push($line);
-    }
+    my @headers = $!connection.lines;
+  
+      if $.debug { $*ERR.say: join("_\n",  @headers); }
+     
     if $.debug { message("Finished parsing headers."); }
     my ($method, $uri, $protocol) = $request.split(/\s/);
     if (!$protocol) { $protocol = DEFAULT_PROTOCOL; }
