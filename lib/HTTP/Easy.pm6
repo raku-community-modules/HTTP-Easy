@@ -61,9 +61,9 @@ method run
       next;
     }
     message($request);
-    my @headers = $!connection.lines;
+    my @headers = $!connection.lines.split("\n");
   
-      if $.debug { $*ERR.say: join("_\n",  @headers); }
+      if $.debug { $*ERR.say: join("\n",  @headers); }
      
     if $.debug { message("Finished parsing headers."); }
     my ($method, $uri, $protocol) = $request.split(/\s/);
