@@ -87,7 +87,8 @@ method run
     %.env<SERVER_NAME> = $.host;
     %.env<SERVER_PORT> = $.port;
     ## Next, let's add HTTP request headers.
-    for @headers -> $header
+    my @request_headers=$request.split("\n");
+    for @request_headers -> $header
     {
       my ($key, $value) = $header.split(': ');
       if defined $key and defined $value {
@@ -108,8 +109,12 @@ method run
       if %.env<CONTENT_LENGTH>
       {
         my $len = +%.env<CONTENT_LENGTH>;
+        # for url encoded data this won't work
+        # "dsadasd"
+        # $len = +171;
+        # say $len;
         $!body = $!connection.read($len);
-#       if $.debug { message("Got body: "~$!body.decode); }
+        if $.debug { message("Got body: "~$!body.decode); }
       }
     }
     elsif $.always-get-body
