@@ -72,33 +72,35 @@ method run
 #      @headers.push($line);
 #    }
 ## This is the temporary workaround.
-    my $found-newline;
+    my $found-newline = False;
     my $current-line = '';
     while $in-headers
     {
       my $byte = $!connection.read(1);
       my $char = $byte.decode;
-      if $char ~~ "\n"
+      if $char ~~ "\r" { next; } ## We're not interested in CR.
+      elsif $char ~~ "\n"        ## But we are in NL.
       {
         if $found-newline 
         { 
-          $in-headers = False; 
+          $in-headers = False;
         }
         else
         {
           @headers.push($current-line);
           $current-line = '';
-          $found-newline = 1;
+          $found-newline = True;
         }
       }
       else
       {
+        $found-newline = False;
         $current-line ~= $char;
       }
     }
 ## End of work around.
 
-    if $.debug { message("Finished parsing headers."); }
+    if $.debug { message("Finished parsing headers: "~@headers.perl); }
     my ($method, $uri, $protocol) = $request.split(/\s/);
     if (!$protocol) { $protocol = DEFAULT_PROTOCOL; }
     unless $method eq any(<GET POST HEAD PUT DELETE>) 
