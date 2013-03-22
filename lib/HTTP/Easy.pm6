@@ -53,9 +53,14 @@ method run
   {
     if $.debug { message("Client connection received."); }
     self.on-connection;
+
     my $preamble = $!connection.get;
-    say "It is cut here\n ------->", $preamble, "\n<---------";
+    ## This is temporary workaound
+    # Second get is needed looks like bug in rakudo.
+    # We just go along with that
+    say "It is cut here\n------->\n", $preamble, "\n<---------";
     $preamble ~= $!connection.get;
+    ## End of work around.
     my @headers = $preamble.split("\r\n");
     my $request = @headers.shift;
     unless defined $request
