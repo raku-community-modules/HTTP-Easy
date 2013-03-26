@@ -36,7 +36,7 @@ method connect (:$port=$.port, :$host=$.host)
     :localhost($host),
     :localport($port),
     :listen(1),
-    :input-line-separator("\r\n\r\n")
+    :input-line-separator(CRLF)
   );
 }
 
@@ -58,7 +58,10 @@ method run
     ## This is temporary workaound
     # Second get is needed looks like bug in rakudo.
     # We just go along with that
-    say "It is cut here\n------->\n", $preamble, "\n<---------";
+    if $.debug 
+    { 
+      message("Read preamble:\n\n$preamble\n\n--- End of preamble.");
+    }
     $preamble ~= $!connection.get;
     ## End of work around.
     my @headers = $preamble.split("\r\n");
@@ -71,8 +74,6 @@ method run
     }
     message($request);
     
-
-
     if $.debug { message("Finished parsing headers: "~@headers.perl); }
     my ($method, $uri, $protocol) = $request.split(/\s/);
     if (!$protocol) { $protocol = DEFAULT_PROTOCOL; }
