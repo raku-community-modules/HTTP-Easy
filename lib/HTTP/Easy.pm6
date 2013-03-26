@@ -58,11 +58,12 @@ method run
     ## This is temporary workaound
     # Second get is needed looks like bug in rakudo.
     # We just go along with that
+    $preamble ~= $!connection.get;
+
     if $.debug 
     { 
-      message("Read preamble:\n\n$preamble\n\n--- End of preamble.");
+      message("Read preamble:\n$preamble\n--- End of preamble.");
     }
-    $preamble ~= $!connection.get;
     ## End of work around.
     my @headers = $preamble.split("\r\n");
     my $request = @headers.shift;
