@@ -17,7 +17,7 @@ has $.body;                ## Any request body, populated by run().
 ## If set to true, we will read the body even if there is no CONTENT_LENGTH.
 has Bool $.always-get-body = False;
 
-constant CRLF = "\x0D\x0A";
+constant CRLF = "\x0D\x0A\x0D\x0A";
 constant DEFAULT_PROTOCOL = 'HTTP/1.0';
 
 ## We're using DateTime.new(time) instead of DateTime.now()
@@ -36,7 +36,7 @@ method connect (:$port=$.port, :$host=$.host)
     :localhost($host),
     :localport($port),
     :listen(1),
-    :input-line-separator(CRLF)
+    :input-line-separator("\r\n\r\n")
   );
 }
 
@@ -53,7 +53,16 @@ method run
   {
     if $.debug { message("Client connection received."); }
     self.on-connection;
-    my $request = $!connection.get;
+
+    my $preamble = $!connection.get;
+    ## This is temporary workaound
+    # Second get is needed looks like bug in rakudo.
+    # We just go along with that
+    say "It is cut here\n------->\n", $preamble, "\n<---------";
+    $preamble ~= $!connection.get;
+    ## End of work around.
+    my @headers = $preamble.split("\r\n");
+    my $request = @headers.shift;
     unless defined $request
     {
       if $.debug { message("Client connection lost."); }
@@ -61,44 +70,8 @@ method run
       next;
     }
     message($request);
-    my @headers;
-    my $in-headers = True;
-## This should work, but at the moment, IO::Socket::INET is broken.
-#    while $in-headers
-#    {
-#      my $line = $!connection.get;
-#      if ! $line { $in-headers = False; }
-#      if $.debug { $*ERR.say: "  $line"; }
-#      @headers.push($line);
-#    }
-## This is the temporary workaround.
-    my $found-newline = False;
-    my $current-line = '';
-    while $in-headers
-    {
-      my $byte = $!connection.read(1);
-      my $char = $byte.decode;
-      if $char ~~ "\r" { next; } ## We're not interested in CR.
-      elsif $char ~~ "\n"        ## But we are in NL.
-      {
-        if $found-newline 
-        { 
-          $in-headers = False;
-        }
-        else
-        {
-          @headers.push($current-line);
-          $current-line = '';
-          $found-newline = True;
-        }
-      }
-      else
-      {
-        $found-newline = False;
-        $current-line ~= $char;
-      }
-    }
-## End of work around.
+    
+
 
     if $.debug { message("Finished parsing headers: "~@headers.perl); }
     my ($method, $uri, $protocol) = $request.split(/\s/);
