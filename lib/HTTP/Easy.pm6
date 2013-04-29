@@ -147,7 +147,7 @@ method run
     ## If it returns an undefined value, we assume the handler
     ## sent the response to the client directly, and end the session.
     my $res = self.handler;
-    if defined $res 
+    if $res.defined 
     {
       if $res ~~ Buf
       {

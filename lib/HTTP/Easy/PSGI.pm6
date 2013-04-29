@@ -6,9 +6,7 @@ use HTTP::Easy;
 class HTTP::Easy::PSGI:ver<2.1.3>:auth<http://supernovus.github.com/> 
 does HTTP::Easy;
 
-use HTTP::Status;
-
-constant $CRLF = "\x0D\x0A";
+use PSGI;
 
 has $!app;
 
@@ -42,44 +40,8 @@ method handler
   {
     die "Invalid {self.WHAT} application.";
   }
-  my $message = get_http_status_msg($result[0]);
-  my $output = $.http-protocol ~ ' ' ~ $result[0] ~ " $message$CRLF";
-  for @($result[1]) -> $header 
-  {
-    $output ~= $header.key ~ ': ' ~ $header.value ~ $CRLF;
-  }
-  my @body = $result[2];
-  my $body;
-  for @body -> $segment
-  {
-    if ! $body.defined
-    {
-      $body = $segment;
-    }
-    elsif $body ~~ Buf
-    {
-      if $segment ~~ Buf
-      {
-        $body ~= $segment;
-      }
-      else
-      {
-        $body ~= $segment.Str.encode;
-      }
-    }
-    else
-    {
-      $body ~= $segment;
-    }
-  }
-  if $body ~~ Buf
-  {
-    $output = ($output~$CRLF).encode ~ $body;
-  }
-  else
-  {
-    $output ~= $CRLF ~ $body;
-  }
+  my $protocol = $.http-protocol;
+  my $output = encode-psgi-response($result, :$protocol, :nph);
   return $output;
 }
 
