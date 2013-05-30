@@ -55,11 +55,6 @@ method run
     self.on-connection;
 
     my $preamble = $!connection.get;
-    ## This is temporary workaound
-    # Second get is needed looks like bug in rakudo.
-    # We just go along with that
-    $preamble ~= $!connection.get;
-
     if $.debug 
     { 
       message("Read preamble:\n$preamble\n--- End of preamble.");
