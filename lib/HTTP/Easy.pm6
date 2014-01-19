@@ -108,6 +108,7 @@ method run
       }
     }
 
+    $!body = Any;
     if %.env.exists('CONTENT_LENGTH')
     { ## Use CONTENT_LENGTH to determine the length of data to read.
       if %.env<CONTENT_LENGTH>
