@@ -3,5 +3,9 @@
   "version"     : "*",
   "description" : "HTTP servers made easy, including PSGI",
   "depends"     : [ "HTTP::Status", "PSGI" ],
+  "provides"    : {
+    "HTTP::Easy"       : "lib/HTTP/Easy.pm6",
+    "HTTP::Easy::PSGI" : "lib/HTTP/Easy/PSGI.pm6"
+  },
   "source-url"  : "git://github.com/supernovus/perl6-http-easy.git"
 }
