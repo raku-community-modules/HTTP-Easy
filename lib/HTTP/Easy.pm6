@@ -42,7 +42,7 @@ method connect (:$port=$.port, :$host=$.host)
 
 method run 
 {
-  if %*ENV.exists('HTTP_EASY_DEBUG')
+  if %*ENV<HTTP_EASY_DEBUG> :exists
   {
     $!debug = ?%*ENV<HTTP_EASY_DEBUG>;
   }
@@ -80,7 +80,7 @@ method run
       next;
     }
     $!http-protocol = $protocol;
-    %!env = {}; ## Delete the previous hash.
+    %!env = (); ## Delete the previous hash.
     my ($path, $query) = $uri.split('?', 2);
     $query //= '';
     ## First, let's add our "known" headers.
@@ -99,7 +99,7 @@ method run
         $key ~~ s:g/\-/_/;
         $key .= uc;
         $key = 'HTTP_' ~ $key unless $key eq any(<CONTENT_LENGTH CONTENT_TYPE>);
-        if %!env.exists($key) {
+        if %!env{$key} :exists {
           %!env{$key} ~= ", $value";
         }
         else {
@@ -109,7 +109,7 @@ method run
     }
 
     $!body = Any;
-    if %.env.exists('CONTENT_LENGTH')
+    if %.env<CONTENT_LENGTH> :exists
     { ## Use CONTENT_LENGTH to determine the length of data to read.
       if %.env<CONTENT_LENGTH>
       {
