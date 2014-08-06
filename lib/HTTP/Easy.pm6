@@ -54,7 +54,24 @@ method run
     if $.debug { message("Client connection received."); }
     self.on-connection;
 
-    my $preamble = $!connection.get;
+    my $first-chunk;
+    my $msg-body-pos;
+    my @a;
+    my @b = "\r\n\r\n".ords;
+
+    while my $t = $!connection.recv( :bin ) {
+        $first-chunk = Blob[uint8].new($first-chunk.list, $t.list);
+        @a           = $first-chunk.list;
+
+        # Find the header/body separator in the chunk, which means we can parse the header seperately and are
+        # able to figure out the correct encoding of the body.
+        $msg-body-pos = @a.first-index({ @a[(state $i = -1) .. $i++ + @b] ~~ @b });
+        last if $msg-body-pos;
+    }
+    $msg-body-pos   += 2 if $msg-body-pos >= 0;
+    $!body = buf8.new( @a[($msg-body-pos + 2)..*] );
+
+    my $preamble = $first-chunk.decode('ascii').substr(0, $msg-body-pos);
     if $.debug 
     { 
       message("Read preamble:\n$preamble\n--- End of preamble.");
@@ -108,29 +125,22 @@ method run
       }
     }
 
-    $!body = Any;
     if %.env<CONTENT_LENGTH> :exists
     { ## Use CONTENT_LENGTH to determine the length of data to read.
       if %.env<CONTENT_LENGTH>
       {
-        my $len = +%.env<CONTENT_LENGTH>;
-        $!body = $!connection.read($len);
+        while %.env<CONTENT_LENGTH> > $!body.bytes {
+          $!body ~= $!connection.recv(%.env<CONTENT_LENGTH> - $!body.bytes, :bin);
+        }
 #       if $.debug { message("Got body: "~$!body.decode); }
       }
     }
     elsif $.always-get-body
     {
       ## No content length. Keep reading until no data is sent.
-      while my $read = $!connection.read(1024)
+      while my $read = $!connection.recv(:bin)
       {
-        if $!body.defined
-        {
-          $!body ~= $read;
-        }
-        else
-        {
-          $!body = $read;
-        }
+        $!body ~= $read;
       }
     }
 
