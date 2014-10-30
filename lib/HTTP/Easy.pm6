@@ -27,7 +27,7 @@ constant DEFAULT_PROTOCOL = 'HTTP/1.0';
 sub message ($message) 
 {
   my $timestamp = DateTime.new(time).Str;
-  $*ERR.say: "[$timestamp] $message";
+  note "[$timestamp] $message";
 }
 
 method connect (:$port=$.port, :$host=$.host)
