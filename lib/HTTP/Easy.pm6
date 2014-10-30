@@ -143,7 +143,7 @@ method run
       if defined $key and defined $value {
         $key ~~ s:g/\-/_/;
         $key .= uc;
-        $key = 'HTTP_' ~ $key unless $key eq any(<CONTENT_LENGTH CONTENT_TYPE>);
+        $key = 'HTTP_' ~ $key unless $key eq 'CONTENT_LENGTH' | 'CONTENT_TYPE';
         if %!env{$key} :exists {
           %!env{$key} ~= ", $value";
         }
