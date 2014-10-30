@@ -59,7 +59,7 @@ method run
 
     while my $t = $!connection.recv( :bin ) {
         if $first-chunk.defined {
-            $first-chunk = Blob[uint8].new($first-chunk.list, $t.list);
+            $first-chunk = $first-chunk ~ $t;
         } else {
             # overwhelmingly often (for simple GET requests, for example) we'll
             # get all data in one run through this loop.
