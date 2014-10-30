@@ -27,7 +27,7 @@ constant DEFAULT_PROTOCOL = 'HTTP/1.0';
 sub message ($message) 
 {
   my $timestamp = DateTime.new(time).Str;
-  $*ERR.say: "[$timestamp] $message";
+  note "[$timestamp] $message";
 }
 
 method connect (:$port=$.port, :$host=$.host)
@@ -58,6 +58,7 @@ method run
     my $msg-body-pos;
 
     while my $t = $!connection.recv( :bin ) {
+        if $!debug { message("Received a chunk of { $t.elems } bytes length") }
         if $first-chunk.defined {
             $first-chunk = $first-chunk ~ $t;
         } else {
@@ -85,6 +86,18 @@ method run
 
         last if $msg-body-pos;
     }
+
+    unless defined $first-chunk {
+        # if we're here, that means our recv timed out.
+        # browsers will sometimes open a connection even though there is no
+        # request to send yet, to make the next request faster.
+        # since we have to be parrot-compatible, we can't use async
+        # features, so we'll have to do it the nasty, time-out way.
+        if $!debug { message("thrown out a connection that sent no data.") }
+        $!connection.close;
+        next;
+    }
+
     $!body = $first-chunk.subbuf($msg-body-pos + 2);
 
     my $preamble = $first-chunk.decode('ascii').substr(0, $msg-body-pos);
@@ -131,7 +144,7 @@ method run
       if defined $key and defined $value {
         $key ~~ s:g/\-/_/;
         $key .= uc;
-        $key = 'HTTP_' ~ $key unless $key eq any(<CONTENT_LENGTH CONTENT_TYPE>);
+        $key = 'HTTP_' ~ $key unless $key eq 'CONTENT_LENGTH' | 'CONTENT_TYPE';
         if %!env{$key} :exists {
           %!env{$key} ~= ", $value";
         }
