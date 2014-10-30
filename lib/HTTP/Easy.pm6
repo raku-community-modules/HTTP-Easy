@@ -58,6 +58,7 @@ method run
     my $msg-body-pos;
 
     while my $t = $!connection.recv( :bin ) {
+        if $!debug { message("Received a chunk of { $t.elems } bytes length") }
         if $first-chunk.defined {
             $first-chunk = $first-chunk ~ $t;
         } else {
