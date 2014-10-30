@@ -56,20 +56,36 @@ method run
 
     my $first-chunk;
     my $msg-body-pos;
-    my @a;
-    my @b = "\r\n\r\n".ords;
 
     while my $t = $!connection.recv( :bin ) {
-        $first-chunk = Blob[uint8].new($first-chunk.list, $t.list);
-        @a           = $first-chunk.list;
+        if $first-chunk.defined {
+            $first-chunk = $first-chunk ~ $t;
+        } else {
+            # overwhelmingly often (for simple GET requests, for example) we'll
+            # get all data in one run through this loop.
+            $first-chunk = $t;
+        }
 
-        # Find the header/body separator in the chunk, which means we can parse the header seperately and are
-        # able to figure out the correct encoding of the body.
-        $msg-body-pos = @a.first-index({ @a[(state $i = -1) .. $i++ + @b] ~~ @b });
+        # Find the header/body separator in the chunk, which means we can parse
+        # the header seperately and are able to figure out the
+        # correct encoding of the body.
+
+        my int $look_position = 0;
+        my int $end_of_buffer = $first-chunk.elems;
+
+        while $look_position < $end_of_buffer - 3 {
+            if $first-chunk.at_pos($look_position) == 13 && $first-chunk.at_pos($look_position + 1) == 10
+               && $first-chunk.at_pos($look_position + 2) == 13 && $first-chunk.at_pos($look_position + 3) == 10 {
+                $msg-body-pos = $look_position + 2;
+                last;
+            } else {
+                $look_position = $look_position + 1;
+            }
+        }
+
         last if $msg-body-pos;
     }
-    $msg-body-pos   += 2 if $msg-body-pos >= 0;
-    $!body = buf8.new( @a[($msg-body-pos + 2)..*] );
+    $!body = $first-chunk.subbuf($msg-body-pos + 2);
 
     my $preamble = $first-chunk.decode('ascii').substr(0, $msg-body-pos);
     if $.debug 
@@ -90,7 +106,7 @@ method run
     if $.debug { message("Finished parsing headers: "~@headers.perl); }
     my ($method, $uri, $protocol) = $request.split(/\s/);
     if (!$protocol) { $protocol = DEFAULT_PROTOCOL; }
-    unless $method eq any(<GET POST HEAD PUT DELETE>) 
+    unless $method eq 'GET' | 'POST' | 'HEAD' | 'PUT' | 'DELETE'
     { 
       $!connection.send(self.unhandled-method);
       $!connection.close;
