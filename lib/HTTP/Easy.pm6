@@ -85,6 +85,18 @@ method run
 
         last if $msg-body-pos;
     }
+
+    unless defined $first-chunk {
+        # if we're here, that means our recv timed out.
+        # browsers will sometimes open a connection even though there is no
+        # request to send yet, to make the next request faster.
+        # since we have to be parrot-compatible, we can't use async
+        # features, so we'll have to do it the nasty, time-out way.
+        if $!debug { message("thrown out a connection that sent no data.") }
+        $!connection.close;
+        next;
+    }
+
     $!body = $first-chunk.subbuf($msg-body-pos + 2);
 
     my $preamble = $first-chunk.decode('ascii').substr(0, $msg-body-pos);
