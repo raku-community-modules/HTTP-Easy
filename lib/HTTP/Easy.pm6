@@ -106,7 +106,7 @@ method run
     if $.debug { message("Finished parsing headers: "~@headers.perl); }
     my ($method, $uri, $protocol) = $request.split(/\s/);
     if (!$protocol) { $protocol = DEFAULT_PROTOCOL; }
-    unless $method eq any(<GET POST HEAD PUT DELETE>) 
+    unless $method eq 'GET' | 'POST' | 'HEAD' | 'PUT' | 'DELETE'
     { 
       $!connection.send(self.unhandled-method);
       $!connection.close;
