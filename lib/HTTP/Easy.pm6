@@ -6,7 +6,7 @@ role HTTP::Easy:ver<2.1.3>:auth<http://supernovus.github.com/>;
 use HTTP::Status;
 
 has Int $.port   = 8080;
-has Str $.host   = 'localhost';
+has Str $.host   = '0.0.0.0';
 has Bool $.debug = False;
 has $!listener;
 has $.connection;          ## To be populated by accept().
