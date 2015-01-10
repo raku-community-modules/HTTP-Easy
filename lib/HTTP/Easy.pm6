@@ -195,8 +195,10 @@ method run
     }
     $!connection.close;
     self.closed-connection;
+    if $.debug { message("Client connection closed."); }
   }
   self.finish-connection;
+  if $.debug { message("Connection finished. Server closed."); }
 }
 
 ## Stub methods. Replace with your own.
