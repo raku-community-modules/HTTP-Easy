@@ -17,8 +17,8 @@ has $.body;                ## Any request body, populated by run().
 ## If set to true, we will read the body even if there is no CONTENT_LENGTH.
 has Bool $.always-get-body = False;
 
-constant CRLF = "\x0D\x0A\x0D\x0A";
-constant DEFAULT_PROTOCOL = 'HTTP/1.0';
+constant CRLF is export             = "\x0D\x0A";
+constant DEFAULT_PROTOCOL is export = 'HTTP/1.0';
 
 ## We're using DateTime.new(time) instead of DateTime.now()
 ## Because the current DateTime messes up the user's local timezone
@@ -36,7 +36,7 @@ method connect (:$port=$.port, :$host=$.host)
     :localhost($host),
     :localport($port),
     :listen(1),
-    :input-line-separator(CRLF)
+    :input-line-separator(CRLF ~ CRLF)
   );
 }
 

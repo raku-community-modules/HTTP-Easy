@@ -2,7 +2,7 @@
   "name"        : "HTTP::Easy",
   "version"     : "*",
   "description" : "HTTP servers made easy, including PSGI",
-  "depends"     : [ "HTTP::Status", "PSGI" ],
+  "depends"     : [ "HTTP::Status" ],
   "provides"    : {
     "HTTP::Easy"       : "lib/HTTP/Easy.pm6",
     "HTTP::Easy::PSGI" : "lib/HTTP/Easy/PSGI.pm6"
