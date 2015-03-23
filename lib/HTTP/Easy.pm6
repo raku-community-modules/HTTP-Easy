@@ -75,8 +75,8 @@ method run
         my int $end_of_buffer = $first-chunk.elems;
 
         while $look_position < $end_of_buffer - 3 {
-            if $first-chunk.at_pos($look_position) == 13 && $first-chunk.at_pos($look_position + 1) == 10
-               && $first-chunk.at_pos($look_position + 2) == 13 && $first-chunk.at_pos($look_position + 3) == 10 {
+            if $first-chunk.AT-POS($look_position) == 13 && $first-chunk.AT-POS($look_position + 1) == 10
+               && $first-chunk.AT-POS($look_position + 2) == 13 && $first-chunk.AT-POS($look_position + 3) == 10 {
                 $msg-body-pos = $look_position + 2;
                 last;
             } else {
