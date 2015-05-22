@@ -4,7 +4,7 @@
 use HTTP::Easy;
 use HTTP::Status;
 
-class HTTP::Easy::PSGI:ver<2.1.3>:auth<http://supernovus.github.com/> 
+unit class HTTP::Easy::PSGI:ver<2.1.3>:auth<http://supernovus.github.com/> 
 does HTTP::Easy;
 
 has $!app;
