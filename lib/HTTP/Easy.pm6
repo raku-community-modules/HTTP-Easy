@@ -1,7 +1,7 @@
 ## A simple HTTP Daemon role. Inspired by HTTP::Server::Simple
 ## See HTTP::Easy::PSGI as the default daemon class implementation.
 
-role HTTP::Easy:ver<2.1.3>:auth<http://supernovus.github.com/>;
+unit role HTTP::Easy:ver<2.1.3>:auth<http://supernovus.github.com/>;
 
 use HTTP::Status;
 
