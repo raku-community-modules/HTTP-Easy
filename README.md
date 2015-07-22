@@ -1,5 +1,7 @@
 # HTTP::Easy
 
+[![Build Status](https://travis-ci.org/supernovus/perl6-http-easy.svg?branch=master)](https://travis-ci.org/supernovus/perl6-http-easy)
+
 ## Introduction
 
 Perl 6 libraries to make HTTP servers easily. 
