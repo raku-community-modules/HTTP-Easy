@@ -17,8 +17,8 @@ has $.body;                ## Any request body, populated by run().
 ## If set to true, we will read the body even if there is no CONTENT_LENGTH.
 has Bool $.always-get-body = False;
 
-constant CRLF is export             = "\x0D\x0A";
-constant DEFAULT_PROTOCOL is export = 'HTTP/1.0';
+my constant CRLF is export             = "\x0D\x0A";
+my constant DEFAULT_PROTOCOL is export = 'HTTP/1.0';
 
 ## We're using DateTime.new(time) instead of DateTime.now()
 ## Because the current DateTime messes up the user's local timezone
