@@ -121,7 +121,7 @@ method run
     if (!$protocol) { $protocol = DEFAULT_PROTOCOL; }
     unless $method eq 'GET' | 'POST' | 'HEAD' | 'PUT' | 'DELETE'
     { 
-      $!connection.send(self.unhandled-method);
+      $!connection.print(self.unhandled-method);
       $!connection.close;
       next;
     }
@@ -190,7 +190,7 @@ method run
       }
       else
       {
-        $!connection.send($res.Str);
+        $!connection.print($res.Str);
       }
     }
     $!connection.close;
