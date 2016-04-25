@@ -8,6 +8,7 @@ use PSGI;
 unit class HTTP::Easy::PSGI:ver<3.0.0>:auth<http://supernovus.github.com/>
 does HTTP::Easy;
 
+has $.p6sgi = True;
 has $.psgi-classic = False;
 has $.errors = $*ERR;
 has $!app;
@@ -25,6 +26,7 @@ method handler
     :input($.body), 
     :errors($.errors),
     :errors-buffered,
+    :p6sgi($.p6sgi),
     :psgi-classic($.psgi-classic),
   );
 
