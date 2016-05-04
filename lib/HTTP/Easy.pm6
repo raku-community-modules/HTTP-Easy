@@ -100,7 +100,7 @@ method run
 
     $!body = $first-chunk.subbuf($msg-body-pos + 2);
 
-    my $preamble = $first-chunk.decode('ascii').substr(0, $msg-body-pos);
+    my $preamble = $first-chunk.subbuf(0, $msg-body-pos).decode('ascii');
     if $.debug 
     { 
       message("Read preamble:\n$preamble\n--- End of preamble.");
