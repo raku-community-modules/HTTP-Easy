@@ -35,8 +35,7 @@ method connect (:$port=$.port, :$host=$.host)
   $!listener = IO::Socket::INET.new(
     :localhost($host),
     :localport($port),
-    :listen(1),
-    :input-line-separator(CRLF ~ CRLF)
+    :listen
   );
 }
 
