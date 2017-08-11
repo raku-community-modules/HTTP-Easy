@@ -2,9 +2,8 @@ language: perl6
 perl6:
     - latest
 install:
-    - rakudobrew build-panda
-    - panda installdeps .
-#script:
-#    - perl6 -MPanda::Builder -e 'Panda::Builder.build($*CWD)'
-#    - PERL6LIB=$PWD/blib/lib prove -e perl6 -r t/
+    - rakudobrew build zef
+    - zef install --deps-only .
+script:
+    - prove -e 'perl6 -Ilib' -r t/
 sudo: false
