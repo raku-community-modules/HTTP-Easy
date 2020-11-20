@@ -4,7 +4,7 @@
 
 ## Introduction
 
-Perl 6 libraries to make HTTP servers easily. 
+Raku libraries to make HTTP servers easily. 
 
 This was inspired by HTTP::Server::Simple, but has a very different internal
 API, and extended functionality. It's been designed to work well with my
@@ -21,7 +21,7 @@ This provides the framework for parsing HTTP connections.
 A class implementing HTTP::Easy. This builds a PSGI environment, and passes 
 it onto a handler. The handler must return a PSGI response:
 
-```perl
+```raku
   [ $status, @headers, @body ]
 ```
 
@@ -29,7 +29,7 @@ This can be used as an engine in the [Web::App](https://github.com/supernovus/pe
 
 ## Example
 
-```perl
+```raku
 
   use HTTP::Easy::PSGI;
   my $http = HTTP::Easy::PSGI.new(:port(8080));
@@ -54,7 +54,7 @@ This can be used as an engine in the [Web::App](https://github.com/supernovus/pe
 
 ## Author
 
-Timothy Totten, supernovus on #perl6, https://github.com/supernovus/
+Timothy Totten, supernovus on #raku, https://github.com/supernovus/
 
 ## License
 
