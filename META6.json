@@ -8,5 +8,5 @@
     "HTTP::Easy"       : "lib/HTTP/Easy.pm6",
     "HTTP::Easy::PSGI" : "lib/HTTP/Easy/PSGI.pm6"
   },
-  "source-url"  : "git://github.com/supernovus/perl6-http-easy.git"
+  "source-url"  : "git://github.com/raku-community-modules/HTTP-Easy.git"
 }
