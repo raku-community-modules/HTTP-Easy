@@ -1,9 +1,0 @@
-language: perl6
-perl6:
-    - latest
-install:
-    - rakudobrew build zef
-    - zef install --deps-only .
-script:
-    - prove -e 'perl6 -Ilib' -r t/
-sudo: false
