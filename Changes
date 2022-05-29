@@ -1,4 +1,6 @@
 Revision history for HTTP-Easy
 
 {{$NEXT}}
+
+1.2  2022-05-29T20:31:53+02:00
     - First version in the zef ecosystem
