@@ -1,7 +1,3 @@
-#!/usr/bin/env perl6
-
-use lib 'lib';
-
 use HTTP::Easy::PSGI;
 
 my $app = sub (%env) {
@@ -15,3 +11,5 @@ my $app = sub (%env) {
 my $server = HTTP::Easy::PSGI.new(); # :debug
 $server.app($app);
 $server.run;
+
+# vim: expandtab shiftwidth=4

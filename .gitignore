@@ -1,6 +1,2 @@
-Makefile
-blib
-*.swp
-*~
-
-**/.precomp
+.precomp/
+/HTTP-Easy-*

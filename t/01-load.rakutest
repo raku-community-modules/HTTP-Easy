@@ -1,0 +1,8 @@
+use Test;
+
+plan 2;
+
+use-ok 'HTTP::Easy';
+use-ok 'HTTP::Easy::PSGI';
+
+# vim: expandtab shiftwidth=4

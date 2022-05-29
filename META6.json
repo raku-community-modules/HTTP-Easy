@@ -1,12 +1,28 @@
 {
-  "perl"        : "6.*",
-  "name"        : "HTTP::Easy",
-  "version"     : "1.1.0",
-  "description" : "HTTP servers made easy, including PSGI",
-  "depends"     : [ "HTTP::Status", "PSGI" ],
-  "provides"    : {
-    "HTTP::Easy"       : "lib/HTTP/Easy.pm6",
-    "HTTP::Easy::PSGI" : "lib/HTTP/Easy/PSGI.pm6"
+  "auth": "zef:raku-community-modules",
+  "authors": [
+    "Timothy Totten"
+  ],
+  "build-depends": [
+  ],
+  "depends": [
+    "HTTP::Status",
+    "PSGI"
+  ],
+  "description": "HTTP servers made easy, including PSGI",
+  "license": "Artistic-2.0",
+  "name": "HTTP::Easy",
+  "perl": "6.*",
+  "provides": {
+    "HTTP::Easy": "lib/HTTP/Easy.rakumod",
+    "HTTP::Easy::PSGI": "lib/HTTP/Easy/PSGI.rakumod"
   },
-  "source-url"  : "git://github.com/raku-community-modules/HTTP-Easy.git"
+  "resources": [
+  ],
+  "source-url": "git://github.com/raku-community-modules/HTTP-Easy.git",
+  "tags": [
+  ],
+  "test-depends": [
+  ],
+  "version": "1.2"
 }
