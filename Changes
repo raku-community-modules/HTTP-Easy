@@ -1,6 +1,8 @@
 Revision history for HTTP-Easy
 
 {{$NEXT}}
+
+1.3  2026-01-18T19:23:37+01:00
     - Tighten up dependencies
     - Add preliminary coverage testing
     - Add CI badge for each OS

@@ -3,6 +3,8 @@
   "authors": [
     "Timothy Totten"
   ],
+  "build-depends": [
+  ],
   "depends": {
     "runtime": {
       "requires": [
@@ -19,6 +21,9 @@
     "HTTP::Easy::PSGI": "lib/HTTP/Easy/PSGI.rakumod"
   },
   "raku": "6.*",
+  "resources": [
+  ],
+  "source-url": "https://github.com/raku-community-modules/HTTP-Easy.git",
   "support": {
     "bugtracker": "https://github.com/raku-community-modules/HTTP-Easy/issues",
     "email": "community@raku.org",
@@ -29,5 +34,7 @@
     "WEB",
     "PSGI"
   ],
-  "version": "1.2"
+  "test-depends": [
+  ],
+  "version": "1.3"
 }
