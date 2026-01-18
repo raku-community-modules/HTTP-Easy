@@ -1,7 +1,7 @@
 ## A simple HTTP Daemon role. Inspired by HTTP::Server::Simple
 ## See HTTP::Easy::PSGI as the default daemon class implementation.
 
-use HTTP::Status;
+use HTTP::Status:ver<0.0.5+>:auth<zef:lizmat>;
 
 unit role HTTP::Easy;
 
@@ -210,77 +210,4 @@ method unhandled-method() {
     "$.http-protocol $status $message";
 }
 
-=begin pod
-
-=head1 NAME
-
-HTTP::Easy - HTTP servers made easy, including PSGI
-
-=head1 SYNOPSIS
-
-=begin code :lang<raku>
-
-use HTTP::Easy;
-
-=end code
-
-=head1 DESCRIPTION
-
-Raku libraries to make HTTP servers easily. 
-
-This was inspired by C<HTTP::Server::Simple>, but has a very different
-internal API, and extended functionality. It's been designed to work well
-with the C<Web::App> and C<SCGI> libraries.
-
-=head2 HTTP::Easy
-
-A role to build HTTP daemon classes with.  This provides the framework
-for parsing HTTP connections.
-
-=head2 HTTP::Easy::PSGI
-
-A class consuming the C<HTTP::Easy> role. This builds a PSGI environment,
-and passes it onto a handler. The handler must return a C<PSGI> response:
-
-=begin code :lang<raku>
-
-[ $status, @headers, @body ]
-
-=end code
-
-This can be used as an engine in the C<Web::App> library.
-
-=head2 Example
-
-=begin code :lang<raku>
-
-use HTTP::Easy::PSGI;
-my $http = HTTP::Easy::PSGI.new(:port(8080));
-  
-my $app = sub (%env) {
-    my $name = %env<QUERY_STRING> || "World";
-    [ 200, [ 'Content-Type' => 'text/plain' ], [ "Hello $name" ] ]
-}
-
-$http.handle($app);
-
-=end code
-
-=head1 TODO
-
-Implement HTTP/1.1 features such as Transfer-Encoding, etc.
-
-=head1 AUTHOR
-
-Timothy Totten
-
-=head1 COPYRIGHT AND LICENSE
-
-Copyright 2011 - 2017 Timothy Totten
-
-Copyright 2018 - 2022 Raku Community
-
-This library is free software; you can redistribute it and/or modify
-it under the Artistic License 2.0.
-
-=end pod
+# vim: expandtab shiftwidth=4

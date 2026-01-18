@@ -1,4 +1,4 @@
-use HTTP::Easy::PSGI;
+use PSGI:ver<1.2.3+>:auth<zef:raku-community-modules>;
 
 my $app = sub (%env) {
   my $name = %env<QUERY_STRING> || "World";

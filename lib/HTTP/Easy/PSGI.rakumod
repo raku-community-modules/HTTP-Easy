@@ -2,8 +2,8 @@
 # A PSGI application HTTP Server
 
 use HTTP::Easy;
-use HTTP::Status;
-use PSGI;
+use HTTP::Status:ver<0.0.5+>:auth<zef:lizmat>;
+use PSGI:ver<1.2.3+>:auth<zef:raku-community-modules>;
 
 unit class HTTP::Easy::PSGI does HTTP::Easy;
 

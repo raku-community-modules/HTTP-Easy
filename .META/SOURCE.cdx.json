@@ -1,0 +1,200 @@
+{
+  "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2025-08-03T12:36:09+00:00",
+    "lifecycles": [
+      {
+        "phase": "pre-build"
+      }
+    ],
+    "authors": [
+      {
+        "bom-ref": "TimothyTotten",
+        "name": "Timothy Totten"
+      }
+    ],
+    "component": {
+      "type": "library",
+      "mime-type": "text/plain",
+      "bom-ref": "pkg:raku/zef:raku-community-modules/HTTP::Easy@1.2",
+      "authors": [
+        {
+          "bom-ref": "TimothyTotten",
+          "name": "Timothy Totten"
+        }
+      ],
+      "publisher": "zef",
+      "group": "zef:raku-community-modules",
+      "name": "HTTP::Easy",
+      "version": "1.2",
+      "description": "HTTP servers made easy, including PSGI",
+      "scope": "required",
+      "licenses": [
+        {
+          "license": {
+            "id": "Artistic-2.0",
+            "acknowledgement": "declared",
+            "url": "https://spdx.org/licenses/Artistic-2.0.json"
+          }
+        }
+      ],
+      "purl": "pkg:raku/zef:raku-community-modules/HTTP::Easy@1.2",
+      "externalReferences": [
+        {
+          "url": "https://raku.land/zef:raku-community-modules/HTTP::Easy?v=1.2",
+          "type": "documentation"
+        },
+        {
+          "url": "git://github.com/raku-community-modules/HTTP-Easy",
+          "type": "distribution"
+        },
+        {
+          "url": "https://spdx.org/licenses/Artistic-2.0.json",
+          "type": "license"
+        }
+      ]
+    },
+    "licenses": [
+      {
+        "license": {
+          "id": "Artistic-2.0",
+          "acknowledgement": "declared",
+          "url": "https://spdx.org/licenses/Artistic-2.0.json"
+        }
+      }
+    ],
+    "tools": {
+      "components": [
+        {
+          "type": "library",
+          "mime-type": "text/plain",
+          "bom-ref": "pkg:raku/zef:lizmat/SBOM::Raku@0.0.6",
+          "authors": [
+            {
+              "bom-ref": "ElizabethMattijsen",
+              "name": "Elizabeth Mattijsen"
+            }
+          ],
+          "publisher": "zef",
+          "group": "zef:lizmat",
+          "name": "SBOM::Raku",
+          "version": "0.0.6",
+          "description": "Raku specific SBOM functionality",
+          "scope": "required",
+          "licenses": [
+            {
+              "license": {
+                "id": "Artistic-2.0",
+                "acknowledgement": "declared",
+                "url": "https://spdx.org/licenses/Artistic-2.0.json"
+              }
+            }
+          ],
+          "purl": "pkg:raku/zef:lizmat/SBOM::Raku@0.0.6",
+          "externalReferences": [
+            {
+              "url": "https://raku.land/zef:lizmat/SBOM::Raku?v=0.0.6",
+              "type": "documentation"
+            },
+            {
+              "url": "mailto:liz@raku.rocks",
+              "type": "support"
+            },
+            {
+              "url": "https://github.com/lizmat/SBOM-Raku/issues",
+              "type": "issue-tracker"
+            },
+            {
+              "url": "https://github.com/lizmat/SBOM-Raku",
+              "type": "distribution"
+            },
+            {
+              "url": "https://github.com/lizmat/SBOM-Raku/archive/refs/tags/0.0.6.zip",
+              "type": "source-distribution"
+            },
+            {
+              "url": "https://spdx.org/licenses/Artistic-2.0.json",
+              "type": "license"
+            }
+          ],
+          "tags": [
+            "SBOM",
+            "RAKU",
+            "META"
+          ]
+        }
+      ]
+    }
+  },
+  "components": [
+    {
+      "type": "library",
+      "mime-type": "text/plain",
+      "bom-ref": "pkg:raku/zef:lizmat/HTTP::Status@0.0.5",
+      "authors": [
+        {
+          "bom-ref": "ElizabethMattijsen",
+          "name": "Elizabeth Mattijsen"
+        }
+      ],
+      "publisher": "zef",
+      "group": "zef:lizmat",
+      "name": "HTTP::Status",
+      "version": "0.0.5",
+      "description": "Information about HTTP Status Codes",
+      "scope": "required",
+      "licenses": [
+        {
+          "license": {
+            "name": "NOASSERTION",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:raku/zef:lizmat/HTTP::Status@0.0.5",
+      "externalReferences": [
+        {
+          "url": "https://raku.land/zef:lizmat/HTTP::Status?v=0.0.5",
+          "type": "documentation"
+        },
+        {
+          "url": "https://github.com/lizmat/HTTP-Status",
+          "type": "distribution"
+        },
+        {
+          "url": "https://github.com/lizmat/HTTP-Status/issues",
+          "type": "issue-tracker"
+        },
+        {
+          "url": "https://github.com/lizmat/HTTP-Status/archive/refs/tags/0.0.5.zip",
+          "type": "source-distribution"
+        }
+      ],
+      "tags": [
+        "HTTP"
+      ]
+    }
+  ],
+  "externalReferences": [
+    {
+      "url": "https://raku.land/zef:raku-community-modules/HTTP::Easy?v=1.2",
+      "type": "documentation"
+    },
+    {
+      "url": "git://github.com/raku-community-modules/HTTP-Easy",
+      "type": "distribution"
+    },
+    {
+      "url": "https://spdx.org/licenses/Artistic-2.0.json",
+      "type": "license"
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "pkg:raku/HTTP::Status"
+    }
+  ]
+}

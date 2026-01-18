@@ -1,4 +1,4 @@
-[![Actions Status](https://github.com/raku-community-modules/HTTP-Easy/actions/workflows/test.yml/badge.svg)](https://github.com/raku-community-modules/HTTP-Easy/actions)
+[![Actions Status](https://github.com/raku-community-modules/HTTP-Easy/actions/workflows/linux.yml/badge.svg)](https://github.com/raku-community-modules/HTTP-Easy/actions) [![Actions Status](https://github.com/raku-community-modules/HTTP-Easy/actions/workflows/macos.yml/badge.svg)](https://github.com/raku-community-modules/HTTP-Easy/actions) [![Actions Status](https://github.com/raku-community-modules/HTTP-Easy/actions/workflows/windows.yml/badge.svg)](https://github.com/raku-community-modules/HTTP-Easy/actions)
 
 NAME
 ====
@@ -65,7 +65,7 @@ COPYRIGHT AND LICENSE
 
 Copyright 2011 - 2017 Timothy Totten
 
-Copyright 2018 - 2022 Raku Community
+Copyright 2018 - 2026 Raku Community
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 
